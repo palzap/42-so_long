@@ -3,93 +3,93 @@
 /*                                                        :::      ::::::::   */
 /*   ft_format_putaddress.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pealexan <pealexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:59:53 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/02 11:56:44 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/13 07:49:30 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/libft.h"
+#include "../../headers/libft.h"
 
-static int	ft_print_zeroes(char *hexastr, t_buffer *values, int precision)
+static int	ft_print_zeroes(char *hexastr, t_buffer *v, int prec)
 {
 	int	count;
 	int	len;
 
 	count = 0;
 	len = ft_strlen(hexastr);
-	if (values->space || values->plus)
+	if (v->space || v->plus)
 		len++;
-	if (values->width && values->precision)
-		count += ft_paddz1(hexastr, values, precision, len);
+	if (v->w && v->prec)
+		count += ft_paddz1(hexastr, v, prec, len);
 	else
-		count += ft_paddz2(hexastr, values, len);
+		count += ft_paddz2(hexastr, v, len);
 	count += ft_putstr(hexastr);
 	return (count);
 }
 
-static int	ft_print_width(char *hexastr, t_buffer *values, int precision)
+static int	ft_print_w(char *hexastr, t_buffer *v, int prec)
 {
 	int	count;
 	int	len;
 
 	count = 0;
 	len = ft_strlen(hexastr);
-	if (values->space || values->plus)
+	if (v->space || v->plus)
 		len++;
 	if (ft_strncmp(hexastr, "(nil)", 6))
 		len += 2;
-	if (values->width && values->precision)
-		count += ft_paddw1(hexastr, values, precision, len);
+	if (v->w && v->prec)
+		count += ft_paddw1(hexastr, v, prec, len);
 	else
-		count += ft_paddw2(hexastr, values, len);
+		count += ft_paddw2(hexastr, v, len);
 	count += ft_putstr(hexastr);
 	return (count);
 }
 
-static int	ft_print_minus_width2(char *hexastr, t_buffer *values, int len)
+static int	ft_print_minus_w2(char *hexastr, t_buffer *v, int len)
 {
 	int	count;
 
 	count = 0;
-	if (values->space)
+	if (v->space)
 		count += write(1, " ", 1);
-	if (values->plus)
+	if (v->plus)
 		count += write(1, "+", 1);
 	if (ft_strncmp(hexastr, "(nil)", 6))
 	{
 		count += write(1, "0x", 2);
 		len += 2;
 	}
-	while ((values->precision--) > (int)ft_strlen(hexastr))
+	while ((v->prec--) > (int)ft_strlen(hexastr))
 		count += write(1, "0", 1);
 	count += ft_putstr(hexastr);
-	while ((values->width--) > len)
+	while ((v->w--) > len)
 		count += write(1, " ", 1);
 	return (count);
 }
 
-static int	ft_print_minus_width(char *hexastr, t_buffer *values, int precision)
+static int	ft_print_minus_w(char *hexastr, t_buffer *v, int prec)
 {
 	int	count;
 	int	len;
 
 	count = 0;
 	len = ft_strlen(hexastr);
-	if (values->plus || values->space)
-		precision++;
-	if (values->width && values->precision)
-		count += ft_paddmw1(hexastr, values, precision, len);
+	if (v->plus || v->space)
+		prec++;
+	if (v->w && v->prec)
+		count += ft_paddmw1(hexastr, v, prec, len);
 	else
-		count += ft_print_minus_width2(hexastr, values, len);
+		count += ft_print_minus_w2(hexastr, v, len);
 	return (count);
 }
 
-int	ft_format_putaddress(t_buffer *values, unsigned long nb)
+int	ft_format_putaddress(t_buffer *v, unsigned long nb)
 {
 	int		count;
-	int		precision;
+	int		prec;
 	char	*base;
 	char	*hexastr;
 
@@ -99,13 +99,13 @@ int	ft_format_putaddress(t_buffer *values, unsigned long nb)
 		hexastr = ft_strdup("(nil)");
 	else
 		hexastr = ft_get_hexastr(nb, base);
-	precision = values->precision + 2;
-	if (values->minus)
-		count += ft_print_minus_width(hexastr, values, precision);
-	else if (values->zero)
-		count += ft_print_zeroes(hexastr, values, precision);
+	prec = v->prec + 2;
+	if (v->minus)
+		count += ft_print_minus_w(hexastr, v, prec);
+	else if (v->zero)
+		count += ft_print_zeroes(hexastr, v, prec);
 	else
-		count += ft_print_width(hexastr, values, precision);
+		count += ft_print_w(hexastr, v, prec);
 	free(hexastr);
 	return (count);
 }

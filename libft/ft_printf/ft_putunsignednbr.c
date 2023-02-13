@@ -1,35 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_puthexa.c                                       :+:      :+:    :+:   */
+/*   ft_putunsignednbr.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pealexan <pealexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:59:53 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/02 11:58:47 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/13 07:49:30 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/libft.h"
+#include "../../headers/libft.h"
 
-int	ft_puthexa(unsigned long nb, char c)
+int	ft_putunsignednbr(unsigned int nb)
 {
 	int		count;
 	char	*base;
 
 	count = 0;
-	if (c == 'x')
-		base = "0123456789abcdef";
-	if (c == 'X')
-		base = "0123456789ABCDEF";
-	if (nb < 16)
+	base = "0123456789";
+	if (nb < 10)
 	{
 		count += ft_putchar(base[nb]);
 	}
-	if (nb >= 16)
+	if (nb >= 10)
 	{
-		count += ft_puthexa(nb / 16, c);
-		count += ft_puthexa(nb % 16, c);
+		count += ft_putnbr(nb / 10);
+		count += ft_putnbr(nb % 10);
 	}
 	return (count);
 }

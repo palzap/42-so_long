@@ -3,32 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pealexan <pealexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 11:44:13 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/02 11:58:34 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/13 07:49:30 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/libft.h"
+#include "../../headers/libft.h"
 
-int	ft_check_type_format(va_list args, t_buffer *values)
+int	ft_check_type_format(va_list args, t_buffer *v)
 {
 	int	count;
 
 	count = 0;
-	if (values->conversion_type == 's')
-		count += ft_format_putstr(values, va_arg(args, char *));
-	if (values->conversion_type == 'c')
-		count += ft_format_putchar(values, va_arg(args, int));
-	if (values->conversion_type == 'd' || values->conversion_type == 'i')
-		count += ft_format_putnbr(values, va_arg(args, int));
-	if (values->conversion_type == 'u')
-		count += ft_format_putunsignnbr(values, va_arg(args, unsigned int));
-	if (values->conversion_type == 'x' || values->conversion_type == 'X')
-		count += ft_format_puthexa(values, va_arg(args, unsigned int));
-	if (values->conversion_type == 'p')
-		count += ft_format_putaddress(values, va_arg(args, unsigned long));
+	if (v->conversion_type == 's')
+		count += ft_format_putstr(v, va_arg(args, char *));
+	if (v->conversion_type == 'c')
+		count += ft_format_putchar(v, va_arg(args, int));
+	if (v->conversion_type == 'd' || v->conversion_type == 'i')
+		count += ft_format_putnbr(v, va_arg(args, int));
+	if (v->conversion_type == 'u')
+		count += ft_format_putunsignnbr(v, va_arg(args, unsigned int));
+	if (v->conversion_type == 'x')
+		count += ft_format_lowerhexa(v, va_arg(args, unsigned int));
+	if (v->conversion_type == 'X')
+		count += ft_format_upperhexa(v, va_arg(args, unsigned int));
+	if (v->conversion_type == 'p')
+		count += ft_format_putaddress(v, va_arg(args, unsigned long));
+	if (v->conversion_type == '%')
+		count += write(1, "%", 1);
 	return (count);
 }
 

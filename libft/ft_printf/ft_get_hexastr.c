@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_hexastr.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pealexan <pealexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:52:27 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/02 11:57:33 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/13 07:49:30 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/libft.h"
+#include "../../headers/libft.h"
 
 char	*ft_get_hexastr(unsigned long long nb, char *base)
 {

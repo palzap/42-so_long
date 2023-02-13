@@ -3,78 +3,78 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_format.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pealexan <pealexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:58:16 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/02 11:57:30 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/13 07:49:30 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/libft.h"
+#include "../../headers/libft.h"
 
-static int	ft_get_values(t_buffer *values, char *buffer)
+static int	ft_get_v(t_buffer *v, char *buffer)
 {
-	if (!values->point)
+	if (!v->point)
 	{
-		values->width = ft_atoi(buffer);
-		return (ft_getlength(values->width, 10) - 1);
+		v->w = ft_atoi(buffer);
+		return (ft_getlength(v->w, 10) - 1);
 	}
 	else
 	{
-		values->precision = ft_atoi(buffer);
-		return (ft_getlength(values->precision, 10) - 1);
+		v->prec = ft_atoi(buffer);
+		return (ft_getlength(v->prec, 10) - 1);
 	}
 }
 
-static void	ft_read_buffer(char *buffer, t_buffer *values)
+static void	ft_read_buffer(char *buffer, t_buffer *v)
 {
 	while (*buffer)
 	{
 		if (*buffer == '-')
-			values->minus = 1;
+			v->minus = 1;
 		else if (*buffer == '+')
-			values->plus = 1;
+			v->plus = 1;
 		else if (*buffer == ' ')
-			values->space = 1;
+			v->space = 1;
 		else if (*buffer == '0')
-			values->zero = 1;
+			v->zero = 1;
 		else if (*buffer == '#')
-			values->hash = 1;
+			v->hash = 1;
 		else if (*buffer == '.')
-			values->point = 1;
+			v->point = 1;
 		else if ((*buffer >= '1' && *buffer <= '9'))
-			buffer += ft_get_values(values, buffer);
+			buffer += ft_get_v(v, buffer);
 	buffer++;
 	}
 }
 
-static void	ft_init_format_buffer(t_buffer *values)
+static void	ft_init_format_buffer(t_buffer *v)
 {
-	values->conversion_type = 0;
-	values->space = 0;
-	values->zero = 0;
-	values->plus = 0;
-	values->minus = 0;
-	values->hash = 0;
-	values->point = 0;
-	values->width = 0;
-	values->precision = 0;
+	v->conversion_type = 0;
+	v->space = 0;
+	v->zero = 0;
+	v->plus = 0;
+	v->minus = 0;
+	v->hash = 0;
+	v->point = 0;
+	v->w = 0;
+	v->prec = 0;
 }
 
 int	ft_get_format_buffer(const char **str, va_list args)
 {
-	t_buffer	values;
+	t_buffer	v;
 	char		*buffer;
 	int			i;
 
 	i = 0;
-	ft_init_format_buffer(&values);
+	ft_init_format_buffer(&v);
 	while (!ft_strchr(TYPE, (*str)[i]))
 		i++;
 	buffer = ft_substr(*str, 0, i);
-	ft_read_buffer(buffer, &values);
+	ft_read_buffer(buffer, &v);
 	(*str) += i;
-	values.conversion_type = **str;
+	v.conversion_type = **str;
 	free(buffer);
-	return (ft_check_type_format(args, &values));
+	return (ft_check_type_format(args, &v));
 }

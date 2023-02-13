@@ -20,18 +20,6 @@ SRC =	ft_abs.c \
 	ft_atol.c \
 	ft_bzero.c \
 	ft_calloc.c \
-	ft_format_putaddress2.c \
-	ft_format_putaddress.c \
-	ft_format_putchar.c \
-	ft_format_puthexa2.c \
-	ft_format_puthexa.c \
-	ft_format_putnbr.c \
-	ft_format_putposnbr2.c \
-	ft_format_putposnbr.c \
-	ft_format_putstr.c \
-	ft_format_putunsignnbr.c \
-	ft_get_format.c \
-	ft_get_hexastr.c \
 	ft_getlength.c \
 	ft_isalnum.c \
 	ft_isalpha.c \
@@ -57,17 +45,10 @@ SRC =	ft_abs.c \
 	ft_memmove.c \
 	ft_memset.c \
 	ft_min.c \
-	ft_printf.c \
-	ft_putaddress.c \
-	ft_putchar.c \
 	ft_putchar_fd.c \
 	ft_putendl_fd.c \
-	ft_puthexa.c \
-	ft_putnbr.c \
 	ft_putnbr_fd.c \
-	ft_putstr.c \
 	ft_putstr_fd.c \
-	ft_putunsignednbr.c \
 	ft_split.c \
 	ft_strchr.c \
 	ft_strdup.c \
@@ -88,6 +69,24 @@ SRC =	ft_abs.c \
 	ft_wordcount.c \
 	get_next_line.c \
 	get_next_line_multifd.c \
+	ft_printf/ft_format_lowerhexa.c \
+	ft_printf/ft_format_putaddress2.c \
+	ft_printf/ft_format_putaddress.c \
+	ft_printf/ft_format_putchar.c \
+	ft_printf/ft_format_putnbr.c \
+	ft_printf/ft_format_putposnbr.c \
+	ft_printf/ft_format_putstr.c \
+	ft_printf/ft_format_putunsignnbr.c \
+	ft_printf/ft_format_upperhexa.c \
+	ft_printf/ft_get_format.c \
+	ft_printf/ft_get_hexastr.c \
+	ft_printf/ft_printf.c \
+	ft_printf/ft_putaddress.c \
+	ft_printf/ft_putchar.c \
+	ft_printf/ft_puthexa.c \
+	ft_printf/ft_putnbr.c \
+	ft_printf/ft_putstr.c \
+	ft_printf/ft_putunsignednbr.c \
 
 #--------COMMANDS--------#
 CC = cc
