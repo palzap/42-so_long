@@ -116,8 +116,8 @@ typedef struct s_format
 	bool	minus;
 	bool	hash;
 	bool	point;
-	int		width;
-	int		precision;
+	int		w;
+	int		prec;
 }	t_buffer;
 
 # define TYPE "%cspdiuxX"
@@ -131,20 +131,17 @@ int		ft_putaddress(unsigned long nb);
 int		ft_putstr(char *str);
 int		ft_putunsignednbr(unsigned int nb);
 int		ft_format_putchar(t_buffer *values, char c);
-int		ft_format_puthexa(t_buffer *values, unsigned long long nb);
-int		ft_phexa01(char *hexastr, t_buffer *values, int len, char base);
-int		ft_phexaw1(char *hexastr, t_buffer *values, int len, char base);
-int		ft_phexamw1(char *hexastr, t_buffer *values, int len);
+int		ft_format_lowerhexa(t_buffer *values, unsigned long long nb);
+int		ft_format_upperhexa(t_buffer *values, unsigned long long nb);
 int		ft_format_putstr(t_buffer *values, char *str);
 int		ft_format_putaddress(t_buffer *values, unsigned long nb);
-int		ft_paddmw1(char *hexastr, t_buffer *values, int precision, int len);
-int		ft_paddw1(char *hexastr, t_buffer *values, int precision, int len);
+int		ft_paddmw1(char *hexastr, t_buffer *values, int prec, int len);
+int		ft_paddw1(char *hexastr, t_buffer *values, int prec, int len);
 int		ft_paddw2(char *hexastr, t_buffer *values, int len);
-int		ft_paddz1(char *hexastr, t_buffer *values, int precision, int len);
+int		ft_paddz1(char *hexastr, t_buffer *values, int prec, int len);
 int		ft_paddz2(char *hexastr, t_buffer *values, int len);
 int		ft_format_putnbr(t_buffer *values, long long nb);
 int		ft_format_putposnbr(t_buffer *values, unsigned long long nb);
-int		ft_print_posnbrw2(char *number, t_buffer *values, int len);
 int		ft_format_putunsignnbr(t_buffer *values, unsigned long long nb);
 char	*ft_get_hexastr(unsigned long long nb, char *base);
 int		ft_get_format_buffer(const char **str, va_list args);

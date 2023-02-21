@@ -13,19 +13,22 @@
 NAME		= so_long
 BONUS		= so_long_bonus
 LIBFT		= libft.a
+MLX		= libmlx_Linux.a
 
 #----------DIRS----------#
 SRCDIR = ./src/
 LIBFTDIR = ./libft/
+MLXDIR = ./minilibx-linux/
 HEADERDIR = ./headers/
 
-SRC = 
+SRC = so_long.c
 		
 BONUS_SRC = 
 
 #--------COMMANDS--------#
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
+EXTRA = -lXext -lX11
 AR = ar rcs
 RM = rm -rf
 
@@ -40,9 +43,12 @@ all: 		$(NAME)
 
 $(LIBFT):
 		cd $(LIBFTDIR) && $(MAKE)
+
+$(MLX):
+		cd $(MLXDIR) && $(MAKE)
 	
-$(NAME): 	$(OBJ) $(LIBFT)
-		$(CC) $(CFLAGS) $(OBJ) $(LIBFTDIR)$(LIBFT) -o $(NAME)
+$(NAME): 	$(OBJ) $(LIBFT) $(MLX)
+		$(CC) $(CFLAGS) $(OBJ) $(LIBFTDIR)$(LIBFT) $(MLXDIR)$(MLX) $(EXTRA) -o $(NAME)
 
 bonus:		$(BONUS_OBJ) $(LIBFT)
 		$(CC) $(CFLAGS) $(BONUS_OBJ) $(LIBFTDIR)$(LIBFT) -o $(BONUS)
@@ -54,6 +60,7 @@ clean:
 fclean: 	clean
 		@$(RM) $(NAME) $(BONUS) $(LIBFT)
 		@cd $(LIBFTDIR) && $(MAKE) fclean
+		@cd $(MLXDIR) && $(MAKE) clean
 	
 aclean: all clean
 

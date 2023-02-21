@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_format_lowerhexa.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pealexan <pealexan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:59:53 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/13 07:49:30 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/08 10:55:40 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	ft_print_zeroes2(char *hexastr, t_buffer *v, int w, int prec)
 
 	count = 0;
 	if (v->hash && hexastr[0] != '0')
-		count += write(1, "0x", 2);
+		count += write(1, "0x", 1);
 	while ((w--) > (int)ft_strlen(hexastr))
 		count += write(1, "0", 1);
 	while ((prec--) > (int)ft_strlen(hexastr))
@@ -38,7 +38,7 @@ static int	ft_print_zeroes(char *hexastr, t_buffer *v, int w, int prec)
 		while ((w--) > (int)ft_strlen(hexastr))
 			count += write(1, " ", 1);
 		if (v->hash && hexastr[0] != '0')
-			count += write(1, "0x", 2);
+			count += write(1, "0x", 1);
 		while ((prec--) > (int)ft_strlen(hexastr))
 			count += write(1, "0", 1);
 	}
@@ -59,7 +59,7 @@ static int	ft_print_w(char *hexastr, t_buffer *v, int w, int prec)
 	while ((w--) > (int)ft_strlen(hexastr))
 		count += write(1, " ", 1);
 	if (v->hash && hexastr[0] != '0')
-		count += write(1, "0x", 2);
+		count += write(1, "0x", 1);
 	while ((prec--) > (int)ft_strlen(hexastr))
 		count += write(1, "0", 1);
 	if (hexastr[0] != '0' || (hexastr[0] == '0' && v->point && v->prec)
@@ -74,7 +74,7 @@ static int	ft_print_minus_w(char *hexastr, t_buffer *v, int w, int prec)
 
 	count = 0;
 	if (v->hash && hexastr[0] != '0')
-			count += write(1, "0x", 2);
+			count += write(1, "0x", 1);
 	if (hexastr[0] == '0' && v->point && !v->prec)
 		w++;
 	while ((prec--) > (int)ft_strlen(hexastr))
