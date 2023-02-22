@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pleal <pleal@student.42.fr>                +#+  +:+       +#+         #
+#    By: pealexan <pealexan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/14 08:46:18 by pealexan          #+#    #+#              #
-#    Updated: 2023/02/01 08:28:42 by pleal            ###   ########.fr        #
+#    Updated: 2023/02/22 11:57:26 by pealexan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC =	ft_abs.c \
 	ft_atol.c \
 	ft_bzero.c \
 	ft_calloc.c \
+	ft_free_split.c \
 	ft_getlength.c \
 	ft_isalnum.c \
 	ft_isalpha.c \

@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pealexan <pealexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 08:34:48 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/22 07:27:41 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/22 17:18:45 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "headers/so_long.h"
-#include "minilibx-linux/mlx.h"
 
 /* 11111111111111111111
 1C0000000000000000C1
@@ -67,11 +66,69 @@ void    ft_free_map(t_values *v)
     free(v->map);
 }
 
-void    ft_error(t_values *v)
+void    ft_error(t_values *v, char *msg)
 {
     ft_free_map(v);
-    write(2, "Error\n", 6);
+    ft_putstr_fd(msg, 2);
     exit(1);
+}
+
+int    ft_flood_fill(t_values *v, char **map, int x, int y)
+{
+    static int  collectibles;
+    static int  i;
+
+    if (map[y][x] == '1')
+        return (0);
+    else if (map[y][x] == 'C')
+        collectibles++;
+    else if (map[y][x] == 'E')
+        i = 1;
+    map[y][x] = '1';
+    ft_flood_fill(v, map, x + 1, y);
+    ft_flood_fill(v, map, x - 1, y);
+    ft_flood_fill(v, map, x, y + 1);
+    ft_flood_fill(v, map, x, y - 1);
+    if (collectibles == v->c && i == 1)
+        return (1);
+    else
+        return (0);
+} 
+
+void    ft_check_path(t_values *v)
+{
+    char    **map_copy;
+
+    v->i = 0;
+    map_copy = (char **)malloc(sizeof(char *) * (v->map_y + 1));
+    if (!map_copy)
+        ft_error(v, "Error\nCouldn't allocate memory\n");
+    while (v->i < v->map_y)
+    {
+        map_copy[v->i] = ft_strdup(v->map[v->i]);
+        v->i++;
+    }
+    map_copy[v->i] = ft_strdup("");
+    if (ft_flood_fill(v, map_copy, v->start_x, v->start_y) != 1)
+    {
+        ft_free_split(map_copy);
+        ft_error(v, "Error\nNo valid path\n");
+    }
+    ft_free_split(map_copy);
+}
+
+void    ft_check_errors(t_values *v)
+{
+    if (v->c == 0)
+        ft_error(v, "Error\nNo Collectibles\n");
+    else if (v->e == 0)
+        ft_error(v, "Error\nNo Exit\n");
+    else if (v->p == 0)
+        ft_error(v, "Error\nNo Starting position\n");
+    else if (v->e > 1)
+        ft_error(v, "Error\nMore than 1 Exit\n");
+    else if (v->p > 1)
+        ft_error(v, "Error\nMore than 1 Starting position\n");
 }
 
 void    ft_check_map(t_values *v)
@@ -81,25 +138,24 @@ void    ft_check_map(t_values *v)
     {
         v->j = 1;
         if (v->map[v->i][0] != '1' || v->map[v->i][v->map_x - 1] != '1')
-                ft_error(v);
-        while (v->j < v->map_x - 1)
+                ft_error(v, "Error\nInvalid walls\n");
+        while (v->map[v->i][v->j] != '\n')
         {
             if (v->map[v->i][v->j] == 'C')
                 v->c++;
             if (v->map[v->i][v->j] == 'E')
                 v->e++;
             if (v->map[v->i][v->j] == 'P')
+            {
+                v->start_x = v->j;
+                v->start_y = v->i;
                 v->p++;
+            }
             v->j++;
         }
         v->i++;
     }
-    if (v->c == 0)
-        ft_error(v);
-    if (v->e != 1)
-        ft_error(v);
-    if (v->p != 1)
-        ft_error(v);
+    ft_check_path(v);
 }
 
 void    ft_check_walls(t_values *v)
@@ -109,16 +165,22 @@ void    ft_check_walls(t_values *v)
     while (v->map[0][v->j] != '\n')
     {
         if (v->map[0][v->j] != '1')
-            ft_error(v);
+            ft_error(v, "Error\nInvalid walls\n");
         v->j++;
     }
     v->j = 0;
     while (v->map[v->map_y - 1][v->j] != '\n')
     {
         if (v->map[v->map_y - 1][v->j] != '1')
-            ft_error(v);
+            ft_error(v, "Error\nInvalid walls\n");
         v->j++;
     }
+    v->j = 0;
+    /* while (v->j < v->map_y)
+    {
+        if (v->map_x != ((int)ft_strlen(v->map[v->j]) -1))
+            ft_error(v, "Error\nNot rectangular\n");
+    } */
     ft_check_map(v);
 }
 
@@ -128,6 +190,8 @@ void    ft_make_map(char *file, t_values *v)
     int fd;
     
     v->map = (char **)malloc(sizeof(char *) * (v->map_y + 1));
+    if (!v->map)
+        ft_error(v, "Error\nCouldn't allocate memory\n");
     fd = open(file, O_RDONLY);
     line = ft_strdup("");
     v->i = 0;
@@ -137,12 +201,11 @@ void    ft_make_map(char *file, t_values *v)
         if (!line)
             break;
         v->map[v->i] = ft_strdup(line);
-        ft_printf("%s", v->map[v->i]);
         free(line);
         v->i++;
     }
     free(line);
-    v->map[v->i] = '\0';
+    v->map[v->i] = ft_strdup("");
     ft_check_walls(v);
 }
 
@@ -150,7 +213,15 @@ void ft_get_y(char *file, t_values *v)
 {
     char    *line;
     int fd;
-
+    
+    v->i = ft_strlen(file) - 1;
+    while (file[v->i] != '.')
+        v->i--;
+    if (ft_strncmp((file + v->i), ".ber", 4))
+    {
+        ft_putstr_fd("Error\nInvalid file type\n", 2);
+        exit (1);
+    }
     fd = open(file, O_RDONLY);
     line = ft_strdup("");
     while (1)
@@ -161,7 +232,6 @@ void ft_get_y(char *file, t_values *v)
         free(line);
         v->map_y++;
     }
-    ft_printf("%i\n", v->map_y);
     free(line);
     close(fd);
     ft_make_map(file, v);
@@ -181,6 +251,8 @@ void    ft_init_struct(t_values *v)
 	v->map_y = 0;
 	v->img_x = 0;
 	v->img_y = 0;
+    v->start_x = 0;
+	v->start_y = 0;
 	v->p = 0;
 	v->c = 0;
 	v->e = 0;
@@ -195,55 +267,63 @@ int main(int argc, char **argv)
     int j = 0;
     int x = 0;
     int y = 0;
+    int fd;
     t_values    v;
 
+    fd = 0;
     ft_init_struct(&v);
-    if (argc == 2 && argv[1])
-        ft_get_y(argv[1], &v);
-    v.mlx_ptr = mlx_init ();
-    v.win_ptr = mlx_new_window(v.mlx_ptr, (v.map_x * 50), (v.map_y * 50), "so_long");
-
-    v.w_img = mlx_xpm_file_to_image(v.mlx_ptr, "textures/wall.xpm", &v.img_x, &v.img_y);
-    v.p_img = mlx_xpm_file_to_image(v.mlx_ptr, "textures/player.xpm", &v.img_x, &v.img_y);
-    v.c_img = mlx_xpm_file_to_image(v.mlx_ptr, "textures/collectible.xpm", &v.img_x, &v.img_y);
-    v.e_img = mlx_xpm_file_to_image(v.mlx_ptr, "textures/exit.xpm", &v.img_x, &v.img_y);
-    v.f_img = mlx_xpm_file_to_image(v.mlx_ptr, "textures/floor.xpm", &v.img_x, &v.img_y);
-    while (i < (v.map_y))
+    fd = open(argv[1], O_RDONLY);
+    if (fd < 0)
     {
-        j = 0;
-        x = 0;
-        while (j < v.map_x)
-        {
-            if (v.map[i][j] == '1')
-            {
-                mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.w_img, x, y);
-                x += 50;
-            }
-            else if (v.map[i][j] == 'C')
-            {
-                mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.c_img, x, y);
-                x += 50;
-            }
-            else if (v.map[i][j] == 'E')
-            {
-                mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.e_img, x, y);
-                x += 50;
-            }
-            else if (v.map[i][j] == 'P')
-            {
-                mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.p_img, x, y);
-                x += 50;
-            }
-            else if (v.map[i][j] == '0')
-            {
-                mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.f_img, x, y);
-                x += 50;
-            }
-            j++;
-        }
-        y += 50;
-        i++;
+        close(fd);
+        ft_putstr_fd("Error\nFile doesn't exist\n", 2);
+        exit(1);
     }
-    mlx_loop(v.mlx_ptr);
+    if (argc == 2)
+    {
+        close(fd);
+        ft_get_y(argv[1], &v);
+        v.mlx_ptr = mlx_init ();
+        v.win_ptr = mlx_new_window(v.mlx_ptr, (v.map_x * SIZE), (v.map_y * SIZE), "so_long");
+        v.w_img = mlx_xpm_file_to_image(v.mlx_ptr, "textures/wall.xpm", &v.img_x, &v.img_y);
+        v.p_img = mlx_xpm_file_to_image(v.mlx_ptr, "textures/player.xpm", &v.img_x, &v.img_y);
+        v.c_img = mlx_xpm_file_to_image(v.mlx_ptr, "textures/collectible.xpm", &v.img_x, &v.img_y);
+        v.e_img = mlx_xpm_file_to_image(v.mlx_ptr, "textures/exit.xpm", &v.img_x, &v.img_y);
+        v.f_img = mlx_xpm_file_to_image(v.mlx_ptr, "textures/floor.xpm", &v.img_x, &v.img_y);
+        while (i < (v.map_y))
+        {
+            j = 0;
+            x = 0;
+            while (j < v.map_x)
+            {
+                if (v.map[i][j] == '1')
+                {
+                    mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.w_img, x, y);
+                    x += SIZE;
+                }
+                else if (v.map[i][j] == 'C')
+                {
+                    mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.c_img, x, y);
+                    x += SIZE;
+                }
+                else if (v.map[i][j] == 'E')
+                {
+                    mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.e_img, x, y);
+                    x += SIZE;
+                }
+                else if (v.map[i][j] == 'P')
+                {
+                    mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.p_img, x, y);
+                    x += SIZE;
+                }
+                else if (v.map[i][j] == '0')
+                    x += SIZE;
+                j++;
+            }
+            y += SIZE;
+            i++;
+        }
+        mlx_loop(v.mlx_ptr);
+    }
     return (0);
 }

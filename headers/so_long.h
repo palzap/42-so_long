@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pealexan <pealexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 18:37:46 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/22 07:23:24 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/22 12:00:13 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define SO_LONG_H
 
 # include "libft.h"
+# include "../minilibx-linux/mlx.h"
 
 # define SIZE 50
 
@@ -32,6 +33,8 @@ typedef struct s_values
 	int	map_y;
 	int	img_x;
 	int img_y;
+	int	start_x;
+	int	start_y;
 	int	p;
 	int	c;
 	int	e;
@@ -45,9 +48,7 @@ void	ft_get_y(char *file, t_values *v);
 void    ft_make_map(char *file, t_values *v);
 void	ft_check_walls(t_values *v);
 void    ft_check_map(t_values *v);
-void    ft_error(t_values *v);
+void    ft_error(t_values *v, char *msg);
 void    ft_free_map(t_values *v);
-
-
 
 #endif
