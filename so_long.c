@@ -6,18 +6,64 @@
 /*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 08:34:48 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/18 17:04:25 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/22 07:27:41 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "headers/so_long.h"
 #include "minilibx-linux/mlx.h"
 
+/* 11111111111111111111
+1C0000000000000000C1
+10000000000000000001
+10000000000000000001
+10000000000000000001
+1P0000000000000000E1
+11111111111111111111
+
+void    ft_destroy_all(t_values *v)
+{
+    ft_free_map(v);
+    mlx_destroy_image(v->w_img);
+    mlx_destroy_image(v->p_img);
+    mlx_destroy_image(v->e_img);
+    mlx_destroy_image(v->h_img);
+    mlx_destroy_image(v->c_img);
+    mlx_destroy_window(v->win_ptr);
+}
+
+void    ft_move_up(t_values *v)
+{
+    y--;
+    if (map[x][y] == '0')
+    {
+        mlx_destroy_image(v->p_img);
+        mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, v->p_img, x * 50, y * 50);
+    }
+    else if (map[x][y] == 'C')
+    {
+        mlx_destroy_image(v->p_img);
+        mlx_destroy_image(v->c_img);
+        v->c--;
+        mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, v->p_img, x * 50, y * 50);
+    }
+    else if (map[x][y] == 'H' || (map[x][y] == 'E' && !v->c))
+    {
+        ft_destroy_all(v);
+        mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, v->p_img, x * 50, y * 50);
+    }
+    else
+        return ;
+    moves++;
+} */
+
 void    ft_free_map(t_values *v)
 {
-    v->i = 0;
-    while (v->map[v->i++])
-        free(v->map[v->i]);
+    int i;
+
+    i = 0;
+    while (v->map[i++])
+        free(v->map[i]);
     free(v->map);
 }
 
@@ -31,12 +77,12 @@ void    ft_error(t_values *v)
 void    ft_check_map(t_values *v)
 {
     v->i = 1;
-    while (v->i < v->y)
+    while (v->i < v->map_y)
     {
         v->j = 1;
-        if (v->map[v->i][0] != '1' || v->map[v->i][v->x - 1] != '1')
+        if (v->map[v->i][0] != '1' || v->map[v->i][v->map_x - 1] != '1')
                 ft_error(v);
-        while (v->j < v->x - 1)
+        while (v->j < v->map_x - 1)
         {
             if (v->map[v->i][v->j] == 'C')
                 v->c++;
@@ -59,8 +105,7 @@ void    ft_check_map(t_values *v)
 void    ft_check_walls(t_values *v)
 {
     v->j = 0;        
-    v->x = ft_strlen(v->map[0]) - 1;
-    ft_printf("%i\n", v->x);
+    v->map_x = ft_strlen(v->map[0]) - 1;
     while (v->map[0][v->j] != '\n')
     {
         if (v->map[0][v->j] != '1')
@@ -68,9 +113,9 @@ void    ft_check_walls(t_values *v)
         v->j++;
     }
     v->j = 0;
-    while (v->map[v->y - 1][v->j] != '\n')
+    while (v->map[v->map_y - 1][v->j] != '\n')
     {
-        if (v->map[v->y - 1][v->j] != '1')
+        if (v->map[v->map_y - 1][v->j] != '1')
             ft_error(v);
         v->j++;
     }
@@ -82,7 +127,7 @@ void    ft_make_map(char *file, t_values *v)
     char    *line;
     int fd;
     
-    v->map = (char **)malloc(sizeof(char *) * (v->y + 1));
+    v->map = (char **)malloc(sizeof(char *) * (v->map_y + 1));
     fd = open(file, O_RDONLY);
     line = ft_strdup("");
     v->i = 0;
@@ -114,9 +159,9 @@ void ft_get_y(char *file, t_values *v)
         if (!line)
             break;
         free(line);
-        v->y++;
+        v->map_y++;
     }
-    ft_printf("%i\n", v->y);
+    ft_printf("%i\n", v->map_y);
     free(line);
     close(fd);
     ft_make_map(file, v);
@@ -124,83 +169,74 @@ void ft_get_y(char *file, t_values *v)
 
 void    ft_init_struct(t_values *v)
 {
-    v->map = 0;
-    v->x = 0;
-    v->y = 0;
-    v->p = 0;
-    v->c = 0;
-    v->e = 0;
+    v->mlx_ptr = 0;
+	v->win_ptr = 0;
+	v->map = 0;
+	v->w_img = 0;
+	v->p_img = 0;
+	v->c_img = 0;
+	v->e_img = 0;
+	v->h_img = 0;
+	v->map_x = 0;
+	v->map_y = 0;
+	v->img_x = 0;
+	v->img_y = 0;
+	v->p = 0;
+	v->c = 0;
+	v->e = 0;
+	v->h = 0;
     v->i = 0;
     v->j = 0;
 }
 
 int main(int argc, char **argv)
 {
-    void    *mlx_ptr;
-    void    *win_ptr;
-    void    *wall_ptr;
-    int wall_x;
-    int wall_y;
-    void    *player_ptr;
-    int player_x;
-    int player_y;
-    void    *collectible_ptr;
-    int collectible_x;
-    int collectible_y;
-    void    *exit_ptr;
-    int exit_x;
-    int exit_y;
-    void    *floor_ptr;
-    int floor_x;
-    int floor_y;
     int i = 0;
     int j = 0;
     int x = 0;
     int y = 0;
-    t_values    values;
+    t_values    v;
 
-/*     (void)values;
-    (void)argc;
-    (void)argv; */
-    ft_init_struct(&values);
+    ft_init_struct(&v);
     if (argc == 2 && argv[1])
-        ft_get_y(argv[1], &values);
-    mlx_ptr = mlx_init ();
-    win_ptr = mlx_new_window(mlx_ptr, (values.x * 50), (values.y * 50), "so_long");
-    wall_ptr = mlx_xpm_file_to_image(mlx_ptr, "textures/wall.xpm", &wall_x, &wall_y);
-    player_ptr = mlx_xpm_file_to_image(mlx_ptr, "textures/player.xpm", &player_x, &player_y);
-    collectible_ptr = mlx_xpm_file_to_image(mlx_ptr, "textures/collectible.xpm", &collectible_x, &collectible_y);
-    exit_ptr = mlx_xpm_file_to_image(mlx_ptr, "textures/exit.xpm", &exit_x, &exit_y);
-    floor_ptr = mlx_xpm_file_to_image(mlx_ptr, "textures/floor.xpm", &floor_x, &floor_y);
-    while (i < (values.y))
+        ft_get_y(argv[1], &v);
+    v.mlx_ptr = mlx_init ();
+    v.win_ptr = mlx_new_window(v.mlx_ptr, (v.map_x * 50), (v.map_y * 50), "so_long");
+
+    v.w_img = mlx_xpm_file_to_image(v.mlx_ptr, "textures/wall.xpm", &v.img_x, &v.img_y);
+    v.p_img = mlx_xpm_file_to_image(v.mlx_ptr, "textures/player.xpm", &v.img_x, &v.img_y);
+    v.c_img = mlx_xpm_file_to_image(v.mlx_ptr, "textures/collectible.xpm", &v.img_x, &v.img_y);
+    v.e_img = mlx_xpm_file_to_image(v.mlx_ptr, "textures/exit.xpm", &v.img_x, &v.img_y);
+    v.f_img = mlx_xpm_file_to_image(v.mlx_ptr, "textures/floor.xpm", &v.img_x, &v.img_y);
+    while (i < (v.map_y))
     {
         j = 0;
         x = 0;
-        while (j < values.x)
+        while (j < v.map_x)
         {
-            if (values.map[i][j] == '1')
+            if (v.map[i][j] == '1')
             {
-                mlx_put_image_to_window(mlx_ptr, win_ptr, wall_ptr, x, y);
+                mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.w_img, x, y);
                 x += 50;
             }
-            else if (values.map[i][j] == 'C')
+            else if (v.map[i][j] == 'C')
             {
-                mlx_put_image_to_window(mlx_ptr, win_ptr, collectible_ptr, x, y);
+                mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.c_img, x, y);
                 x += 50;
             }
-            else if (values.map[i][j] == 'E')
+            else if (v.map[i][j] == 'E')
             {
-                mlx_put_image_to_window(mlx_ptr, win_ptr, exit_ptr, x, y);
+                mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.e_img, x, y);
                 x += 50;
             }
-            else if (values.map[i][j] == 'P')
+            else if (v.map[i][j] == 'P')
             {
-                mlx_put_image_to_window(mlx_ptr, win_ptr, player_ptr, x, y);
+                mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.p_img, x, y);
                 x += 50;
             }
-            else if (values.map[i][j] == '0')
+            else if (v.map[i][j] == '0')
             {
-                mlx_put_image_to_window(mlx_ptr, win_ptr, floor_ptr, x, y);
+                mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.f_img, x, y);
                 x += 50;
             }
             j++;
@@ -208,6 +244,6 @@ int main(int argc, char **argv)
         y += 50;
         i++;
     }
-     mlx_loop(mlx_ptr);
+    mlx_loop(v.mlx_ptr);
     return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 18:37:46 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/17 19:08:43 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/22 07:23:24 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,27 @@
 
 # include "libft.h"
 
+# define SIZE 50
+
 typedef struct s_values
 {
+	void	*mlx_ptr;
+	void	*win_ptr;
 	char	**map;
-	int	x;
-	int	y;
+	void	*w_img;
+	void	*p_img;
+	void	*c_img;
+	void	*e_img;
+	void	*h_img;
+	void	*f_img;
+	int	map_x;
+	int	map_y;
+	int	img_x;
+	int img_y;
 	int	p;
 	int	c;
 	int	e;
+	int	h;
 	int	i;
 	int	j;
 }	t_values;
