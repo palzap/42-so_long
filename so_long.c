@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pealexan <pealexan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 08:34:48 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/22 17:18:45 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/23 07:23:41 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void    ft_free_map(t_values *v)
     int i;
 
     i = 0;
-    while (v->map[i++])
-        free(v->map[i]);
+    while (v->map[i])
+        free(v->map[i++]);
     free(v->map);
 }
 
@@ -103,12 +103,12 @@ void    ft_check_path(t_values *v)
     map_copy = (char **)malloc(sizeof(char *) * (v->map_y + 1));
     if (!map_copy)
         ft_error(v, "Error\nCouldn't allocate memory\n");
-    while (v->i < v->map_y)
+    while (v->map[v->i])
     {
         map_copy[v->i] = ft_strdup(v->map[v->i]);
         v->i++;
     }
-    map_copy[v->i] = ft_strdup("");
+    map_copy[v->i] = 0;
     if (ft_flood_fill(v, map_copy, v->start_x, v->start_y) != 1)
     {
         ft_free_split(map_copy);
@@ -129,6 +129,7 @@ void    ft_check_errors(t_values *v)
         ft_error(v, "Error\nMore than 1 Exit\n");
     else if (v->p > 1)
         ft_error(v, "Error\nMore than 1 Starting position\n");
+    ft_check_path(v);
 }
 
 void    ft_check_map(t_values *v)
@@ -139,7 +140,7 @@ void    ft_check_map(t_values *v)
         v->j = 1;
         if (v->map[v->i][0] != '1' || v->map[v->i][v->map_x - 1] != '1')
                 ft_error(v, "Error\nInvalid walls\n");
-        while (v->map[v->i][v->j] != '\n')
+        while (v->map[v->i][v->j])
         {
             if (v->map[v->i][v->j] == 'C')
                 v->c++;
@@ -155,32 +156,33 @@ void    ft_check_map(t_values *v)
         }
         v->i++;
     }
-    ft_check_path(v);
+    ft_check_errors(v);
 }
 
 void    ft_check_walls(t_values *v)
 {
     v->j = 0;        
-    v->map_x = ft_strlen(v->map[0]) - 1;
-    while (v->map[0][v->j] != '\n')
+    v->map_x = ft_strlen(v->map[0]);
+    while (v->map[0][v->j])
     {
         if (v->map[0][v->j] != '1')
             ft_error(v, "Error\nInvalid walls\n");
         v->j++;
     }
     v->j = 0;
-    while (v->map[v->map_y - 1][v->j] != '\n')
+    while (v->map[v->map_y - 1][v->j])
     {
         if (v->map[v->map_y - 1][v->j] != '1')
             ft_error(v, "Error\nInvalid walls\n");
         v->j++;
     }
     v->j = 0;
-    /* while (v->j < v->map_y)
+    while (v->j < v->map_y)
     {
-        if (v->map_x != ((int)ft_strlen(v->map[v->j]) -1))
+        if (v->map_x != (int)ft_strlen(v->map[v->j]))
             ft_error(v, "Error\nNot rectangular\n");
-    } */
+        v->j++;
+    }
     ft_check_map(v);
 }
 
@@ -200,28 +202,20 @@ void    ft_make_map(char *file, t_values *v)
         line = get_next_line(fd);
         if (!line)
             break;
-        v->map[v->i] = ft_strdup(line);
+        v->map[v->i] = ft_strtrim(line, "\n");
         free(line);
         v->i++;
     }
     free(line);
-    v->map[v->i] = ft_strdup("");
+    v->map[v->i] = 0;
     ft_check_walls(v);
 }
 
-void ft_get_y(char *file, t_values *v)
+void ft_get_x_y(char *file, t_values *v)
 {
     char    *line;
     int fd;
     
-    v->i = ft_strlen(file) - 1;
-    while (file[v->i] != '.')
-        v->i--;
-    if (ft_strncmp((file + v->i), ".ber", 4))
-    {
-        ft_putstr_fd("Error\nInvalid file type\n", 2);
-        exit (1);
-    }
     fd = open(file, O_RDONLY);
     line = ft_strdup("");
     while (1)
@@ -235,6 +229,30 @@ void ft_get_y(char *file, t_values *v)
     free(line);
     close(fd);
     ft_make_map(file, v);
+}
+
+void    ft_check_file(char *file, t_values *v)
+{
+    int fd;
+
+    fd = 0;
+    fd = open(file, O_RDONLY);
+    if (fd < 0)
+    {
+        close(fd);
+        ft_putstr_fd("Error\nFile doesn't exist\n", 2);
+        exit(1);
+    }
+    v->i = ft_strlen(file) - 1;
+    while (file[v->i] != '.')
+        v->i--;
+    if (ft_strncmp((file + v->i), ".ber", 4))
+    {
+        ft_putstr_fd("Error\nInvalid file type\n", 2);
+        exit (1);
+    }
+    close(fd);
+    ft_get_x_y(file, v);
 }
 
 void    ft_init_struct(t_values *v)
@@ -265,24 +283,14 @@ int main(int argc, char **argv)
 {
     int i = 0;
     int j = 0;
-    int x = 0;
-    int y = 0;
-    int fd;
+    //int fd;
     t_values    v;
 
-    fd = 0;
     ft_init_struct(&v);
-    fd = open(argv[1], O_RDONLY);
-    if (fd < 0)
-    {
-        close(fd);
-        ft_putstr_fd("Error\nFile doesn't exist\n", 2);
-        exit(1);
-    }
     if (argc == 2)
     {
-        close(fd);
-        ft_get_y(argv[1], &v);
+        ft_check_file(argv[1], &v);
+        //ft_graphics(v);
         v.mlx_ptr = mlx_init ();
         v.win_ptr = mlx_new_window(v.mlx_ptr, (v.map_x * SIZE), (v.map_y * SIZE), "so_long");
         v.w_img = mlx_xpm_file_to_image(v.mlx_ptr, "textures/wall.xpm", &v.img_x, &v.img_y);
@@ -293,34 +301,18 @@ int main(int argc, char **argv)
         while (i < (v.map_y))
         {
             j = 0;
-            x = 0;
             while (j < v.map_x)
             {
                 if (v.map[i][j] == '1')
-                {
-                    mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.w_img, x, y);
-                    x += SIZE;
-                }
+                    mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.w_img, j * SIZE, i *  SIZE);
                 else if (v.map[i][j] == 'C')
-                {
-                    mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.c_img, x, y);
-                    x += SIZE;
-                }
+                    mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.c_img, j * SIZE, i * SIZE);
                 else if (v.map[i][j] == 'E')
-                {
-                    mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.e_img, x, y);
-                    x += SIZE;
-                }
+                    mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.e_img, j * SIZE, i * SIZE);
                 else if (v.map[i][j] == 'P')
-                {
-                    mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.p_img, x, y);
-                    x += SIZE;
-                }
-                else if (v.map[i][j] == '0')
-                    x += SIZE;
+                    mlx_put_image_to_window(v.mlx_ptr, v.win_ptr, v.p_img, j * SIZE, i * SIZE);
                 j++;
             }
-            y += SIZE;
             i++;
         }
         mlx_loop(v.mlx_ptr);
