@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+         #
+#    By: pealexan <pealexan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/02 12:26:28 by pealexan          #+#    #+#              #
-#    Updated: 2023/02/02 12:26:30 by pealexan         ###   ########.fr        #
+#    Updated: 2023/02/23 15:01:28 by pealexan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,11 @@ LIBFTDIR = ./libft/
 MLXDIR = ./minilibx-linux/
 HEADERDIR = ./headers/
 
-SRC = so_long.c
+SRC = 	src/free.c \
+		src/graphics.c \
+		src/map.c \
+		src/path.c \
+		src/so_long.c \
 		
 BONUS_SRC = 
 
