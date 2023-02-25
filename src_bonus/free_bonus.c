@@ -6,7 +6,7 @@
 /*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 14:59:04 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/24 23:55:04 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/25 02:54:03 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ void	ft_destroy_images(t_values *v)
 	mlx_destroy_image(v->mlx_ptr, v->hostile.hleft);
 	mlx_destroy_image(v->mlx_ptr, v->w_img);
 	mlx_destroy_image(v->mlx_ptr, v->c_img);
+	mlx_destroy_image(v->mlx_ptr, v->animate.wall1);
+	mlx_destroy_image(v->mlx_ptr, v->animate.wall2);
+	mlx_destroy_image(v->mlx_ptr, v->animate.wall3);
 	mlx_destroy_image(v->mlx_ptr, v->e_img);
 	mlx_destroy_image(v->mlx_ptr, v->f_img);
 	mlx_destroy_image(v->mlx_ptr, v->h_img);

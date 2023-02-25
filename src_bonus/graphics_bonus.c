@@ -6,7 +6,7 @@
 /*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 14:57:15 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/25 01:30:02 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/25 03:13:16 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ int	ft_frames(t_values *v)
 	char	*str;
 
 	str = ft_itoa(v->moves);
-	mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, v->w_img, 0, 0);
-	mlx_string_put(v->mlx_ptr, v->win_ptr, 2, 12, 0xFFFFFF, str);
+	mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, v->w_img, 32, 0);
+	mlx_string_put(v->mlx_ptr, v->win_ptr, 35, 12, 0xFFFFFF, str);
 	free(str);
+	ft_animation(v);
 	v->i = 0;
 	while (v->i < (v->map_y))
 	{
@@ -28,9 +29,6 @@ int	ft_frames(t_values *v)
 		{
 			if (v->map[v->i][v->j] == 'E' && v->c == 0)
 				mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, v->h_img, \
-				v->j * SIZE, v->i * SIZE);
-			if (v->map[v->i][v->j] == 'C')
-				mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, v->c_img, \
 				v->j * SIZE, v->i * SIZE);
 			v->j++;
 		}
@@ -64,8 +62,8 @@ void	ft_load_map(t_values *v)
 				mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, v->w_img, \
 				v->j * SIZE, v->i * SIZE);
 			else if (v->map[v->i][v->j] == 'C')
-				mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, v->c_img, \
-				v->j * SIZE, v->i * SIZE);
+				mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, \
+				v->c_img, v->j * SIZE, v->i * SIZE);
 			else if (v->map[v->i][v->j] == 'E')
 				mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, v->e_img, \
 				v->j * SIZE, v->i * SIZE);
@@ -81,13 +79,14 @@ void	ft_graphics(t_values *v)
 	if (!v->mlx_ptr)
 		ft_error(v, "Error\nCould not allocate mlx_ptr\n");
 	v->win_ptr = mlx_new_window(v->mlx_ptr, (v->map_x * SIZE),
-			(v->map_y * SIZE), "so_long");
+			(v->map_y * SIZE), "so_long_bonus");
 	if (!v->win_ptr)
 		ft_error(v, "Error\nCould not allocate win_ptr\n");
 	v->w_img = mlx_xpm_file_to_image(v->mlx_ptr, "textures/walls/SingleW.xpm",
 			&v->img_x, &v->img_y);
 	ft_load_player(v);
 	ft_load_hostile(v);
+	ft_load_animation(v);
 	v->c_img = mlx_xpm_file_to_image(v->mlx_ptr, "textures/collectibles/c1.xpm",
 			&v->img_x, &v->img_y);
 	v->e_img = mlx_xpm_file_to_image(v->mlx_ptr, "textures/exit/closed.xpm",

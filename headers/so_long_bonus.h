@@ -6,7 +6,7 @@
 /*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 18:37:46 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/25 01:37:13 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/25 03:12:38 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@
 # define A 97
 # define S 115
 # define D 100
+
+typedef struct s_animate
+{
+	void	*wall1;
+	void	*wall2;
+	void	*wall3;
+}	t_animate;
 
 typedef struct s_player
 {
@@ -65,7 +72,15 @@ typedef struct s_values
 	int			moves;
 	t_player	pl;
 	t_hostile	hostile;
+	t_animate	animate;
 }	t_values;
+
+/*ANIMATION-------------------------------------------------------------------*/
+/* Animates collectibles. */
+int		ft_animation(t_values *v);
+
+/* Loads all collectible images. */
+void	ft_load_animation(t_values *v);
 
 /*FREE------------------------------------------------------------------------*/
 /* Clears all allocated memory and exits. */

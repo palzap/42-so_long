@@ -6,7 +6,7 @@
 #    By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/02 12:26:28 by pealexan          #+#    #+#              #
-#    Updated: 2023/02/25 00:56:16 by pealexan         ###   ########.fr        #
+#    Updated: 2023/02/25 03:12:52 by pealexan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ SRC = 	src/free.c \
 		src/path.c \
 		src/so_long.c \
 		
-BONUS_SRC = src_bonus/free_bonus.c \
+BONUS_SRC = src_bonus/animation_bonus.c \
+			src_bonus/free_bonus.c \
 			src_bonus/graphics_bonus.c \
 			src_bonus/hostile_bonus.c \
 			src_bonus/map_bonus.c \
