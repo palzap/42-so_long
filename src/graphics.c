@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   graphics.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pealexan <pealexan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 14:57:15 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/23 15:25:59 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/25 01:03:02 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	ft_load_map(t_values *v)
 			else if (v->map[v->i][v->j] == 'P')
 				mlx_put_image_to_window(v->mlx_ptr,
 					v->win_ptr, v->p_img, v->j * SIZE, v->i * SIZE);
-			else if (v->map[v->i][v->j] == '0')
+			else
 				mlx_put_image_to_window(v->mlx_ptr, v->win_ptr,
 					v->f_img, v->j * SIZE, v->i * SIZE);
 			v->j++;

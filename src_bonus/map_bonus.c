@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map.c                                              :+:      :+:    :+:   */
+/*   map_bonus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 14:54:51 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/25 01:10:07 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/24 23:23:37 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/so_long.h"
+#include "../headers/so_long_bonus.h"
 
 void	ft_check_errors(t_values *v)
 	{
@@ -47,8 +47,6 @@ void	ft_check_map(t_values *v)
 				v->player_y = v->i;
 				v->p++;
 			}
-			if (!ft_strchr(MAPELEMENTS, v->map[v->i][v->j]))
-				ft_error(v, "Error\nIlegal element detected!\n");
 			v->j++;
 		}
 		v->i++;
