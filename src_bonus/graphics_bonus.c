@@ -6,7 +6,7 @@
 /*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 14:57:15 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/25 03:13:16 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/26 09:06:43 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,60 +15,66 @@
 int	ft_frames(t_values *v)
 {
 	char	*str;
+	int		i;
+	int		j;
 
 	str = ft_itoa(v->moves);
 	mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, v->w_img, 32, 0);
 	mlx_string_put(v->mlx_ptr, v->win_ptr, 35, 12, 0xFFFFFF, str);
 	free(str);
 	ft_animation(v);
-	v->i = 0;
-	while (v->i < (v->map_y))
+	ft_hostile_move(v);
+	i = 0;
+	while (i < (v->map_y))
 	{
-		v->j = 0;
-		while (v->j < v->map_x)
+		j = 0;
+		while (j < v->map_x)
 		{
-			if (v->map[v->i][v->j] == 'E' && v->c == 0)
+			if (v->map[i][j] == 'E' && v->c == 0)
 				mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, v->h_img, \
-				v->j * SIZE, v->i * SIZE);
-			v->j++;
+				j * SIZE, i * SIZE);
+			j++;
 		}
-		v->i++;
+		i++;
 	}
 	return (0);
 }
 
-void	ft_load_map2(t_values *v)
+void	ft_load_map2(t_values *v, int i, int j)
 {
-	if (v->map[v->i][v->j] == 'P')
+	if (v->map[i][j] == 'P')
 		mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, v->pl.mvup, \
-		v->j * SIZE, v->i * SIZE);
-	else if (v->map[v->i][v->j] == '0')
+		j * SIZE, i * SIZE);
+	else if (v->map[i][j] == '0')
 		mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, v->f_img, \
-		v->j * SIZE, v->i * SIZE);
-	else if (v->map[v->i][v->j] == 'H')
+		j * SIZE, i * SIZE);
+	else if (v->map[i][j] == 'H')
 		mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, \
-		v->hostile.hdown, v->j * SIZE, v->i * SIZE);
+		v->hostile.hdown, j * SIZE, i * SIZE);
 }
 
 void	ft_load_map(t_values *v)
 {
-	v->i = -1;
-	while (++v->i < (v->map_y))
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < (v->map_y))
 	{
-		v->j = -1;
-		while (++v->j < v->map_x)
+		j = -1;
+		while (++j < v->map_x)
 		{
-			if (v->map[v->i][v->j] == '1')
+			if (v->map[i][j] == '1')
 				mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, v->w_img, \
-				v->j * SIZE, v->i * SIZE);
-			else if (v->map[v->i][v->j] == 'C')
+				j * SIZE, i * SIZE);
+			else if (v->map[i][j] == 'C')
 				mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, \
-				v->c_img, v->j * SIZE, v->i * SIZE);
-			else if (v->map[v->i][v->j] == 'E')
+				v->c_img, j * SIZE, i * SIZE);
+			else if (v->map[i][j] == 'E')
 				mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, v->e_img, \
-				v->j * SIZE, v->i * SIZE);
-			else if (ft_strchr("P0H", v->map[v->i][v->j]))
-				ft_load_map2(v);
+				j * SIZE, i * SIZE);
+			else if (ft_strchr("P0H", v->map[i][j]))
+				ft_load_map2(v, i, j);
 		}
 	}
 }

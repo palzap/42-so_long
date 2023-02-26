@@ -6,11 +6,34 @@
 /*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 08:34:48 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/24 23:25:08 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/26 08:55:43 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/so_long_bonus.h"
+
+void	ft_hostile_move(t_values *v)
+{
+	int			random;
+	static int	i;
+
+	i++;
+	random = 0;
+	srand(time(0));
+	if (i == 5000)
+	{
+		random = rand() % 4;
+		if (random == 0)
+			ft_move_hostileleft(v);
+		else if (random == 1)
+			ft_move_hostileup(v);
+		else if (random == 2)
+			ft_move_hostiledown(v);
+		else if (random == 3)
+			ft_move_hostileright(v);
+		i = 0;
+	}
+}
 
 void	ft_check_file(char *file, t_values *v)
 {

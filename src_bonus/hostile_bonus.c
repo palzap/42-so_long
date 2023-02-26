@@ -6,7 +6,7 @@
 /*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 00:49:50 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/25 01:26:24 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/26 09:25:23 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	ft_move_hostileright(t_values *v)
 		v->j = 0;
 		while (v->j < v->map_x)
 		{
+			if (v->map[v->i][v->j] == 'H' && v->map[v->i][v->j + 1] == 'P')
+				ft_exit(v);
 			if (v->map[v->i][v->j] == 'H' && v->map[v->i][v->j + 1] == '0')
 			{
 				mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, v->f_img, \
@@ -56,6 +58,8 @@ void	ft_move_hostileleft(t_values *v)
 		v->j = 0;
 		while (v->j < v->map_x)
 		{
+			if (v->map[v->i][v->j] == 'H' && v->map[v->i][v->j -1] == 'P')
+				ft_exit(v);
 			if (v->map[v->i][v->j] == 'H' && v->map[v->i][v->j - 1] == '0')
 			{
 				mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, \
@@ -80,6 +84,8 @@ void	ft_move_hostileup(t_values *v)
 		v->j = 0;
 		while (v->j < v->map_x)
 		{
+			if (v->map[v->i][v->j] == 'H' && v->map[v->i - 1][v->j] == 'P')
+				ft_exit(v);
 			if (v->map[v->i][v->j] == 'H' && v->map[v->i - 1][v->j] == '0')
 			{
 				mlx_put_image_to_window(v->mlx_ptr, v->win_ptr, \
@@ -100,13 +106,15 @@ void	ft_move_hostiledown(t_values *v)
 {
 	int	flag;
 
-	v->i = 0;
+	v->i = -1;
 	flag = 0;
-	while (v->i < (v->map_y))
+	while (++v->i < (v->map_y))
 	{
-		v->j = 0;
-		while (v->j < v->map_x)
+		v->j = -1;
+		while (++v->j < v->map_x)
 		{
+			if (v->map[v->i][v->j] == 'H' && v->map[v->i + 1][v->j] == 'P')
+				ft_exit(v);
 			if (v->map[v->i][v->j] == 'H' && v->map[v->i + 1][v->j] == '0' \
 			&& flag == 0)
 			{
@@ -119,8 +127,6 @@ void	ft_move_hostiledown(t_values *v)
 				flag = 1;
 				break ;
 			}
-			v->j++;
 		}
-		v->i++;
 	}
 }

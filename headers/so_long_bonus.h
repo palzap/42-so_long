@@ -6,7 +6,7 @@
 /*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 18:37:46 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/25 03:12:38 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/26 09:20:33 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft.h"
 # include "../minilibx-linux/mlx.h"
 # include <X11/X.h>
+# include <time.h>
 
 # define SIZE 32
 # define ESC 65307
@@ -76,13 +77,24 @@ typedef struct s_values
 }	t_values;
 
 /*ANIMATION-------------------------------------------------------------------*/
+
+/* Continuation of animation */
+void	ft_animation1(t_values *v);
+
+/* Continuation of animation */
+void	ft_animation2(t_values *v);
+
+/* Continuation of animation */
+void	ft_animation3(t_values *v);
+
 /* Animates collectibles. */
-int		ft_animation(t_values *v);
+void	ft_animation(t_values *v);
 
 /* Loads all collectible images. */
 void	ft_load_animation(t_values *v);
 
 /*FREE------------------------------------------------------------------------*/
+
 /* Clears all allocated memory and exits. */
 int		ft_exit(t_values *v);
 
@@ -96,8 +108,9 @@ void	ft_error(t_values *v, char *msg);
 void	ft_free_map(t_values *v);
 
 /*GRAPHICS--------------------------------------------------------------------*/
+
 /* Checks the map and puts the corresponding image to the window. */
-void	ft_load_map2(t_values *v);
+void	ft_load_map2(t_values *v, int i, int j);
 
 /* Checks the map and puts the corresponding image to the window. */
 void	ft_load_map(t_values *v);
@@ -113,6 +126,7 @@ int		ft_check_move(int keycode, t_values *v);
 int		ft_frames(t_values *v);
 
 /*HOSTILE---------------------------------------------------------------------*/
+
 /* Loads all hostile images. */
 void	ft_load_hostile(t_values *v);
 
@@ -129,6 +143,7 @@ void	ft_move_hostileup(t_values *v);
 void	ft_move_hostiledown(t_values *v);
 
 /*MAP-------------------------------------------------------------------------*/
+
 /* Checks and outputs the error message. */
 void	ft_check_errors(t_values *v);
 
@@ -146,6 +161,7 @@ void	ft_make_map(char *file, t_values *v);
 void	ft_get_x_y(char *file, t_values *v);
 
 /*PATH------------------------------------------------------------------------*/
+
 /* Checks if there is a valid path to complete the game. */
 int		ft_flood_fill(t_values *v, char **map, int x, int y);
 
@@ -153,6 +169,7 @@ int		ft_flood_fill(t_values *v, char **map, int x, int y);
 void	ft_check_path(t_values *v);
 
 /*PLAYER----------------------------------------------------------------------*/
+
 /* Loads all player images. */
 void	ft_load_player(t_values *v);
 
@@ -169,6 +186,10 @@ int		ft_move_up(t_values *v, int x, int y);
 int		ft_move_down(t_values *v, int x, int y);
 
 /*SO_LONG---------------------------------------------------------------------*/
+
+/* Moves hostiles depending on random number generation. */
+void	ft_hostile_move(t_values *v);
+
 /* Initialize all struct values to 0. */
 void	ft_init_struct(t_values *v);
 
