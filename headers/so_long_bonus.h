@@ -6,7 +6,7 @@
 /*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 18:37:46 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/26 09:20:33 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/28 10:56:13 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # define A 97
 # define S 115
 # define D 100
+# define MAPELEMENTS "01CPEH"
 
 typedef struct s_animate
 {

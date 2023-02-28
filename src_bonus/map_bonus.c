@@ -6,7 +6,7 @@
 /*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 14:54:51 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/24 23:23:37 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/02/28 10:56:20 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	ft_check_map(t_values *v)
 				v->player_y = v->i;
 				v->p++;
 			}
+			if (!ft_strchr(MAPELEMENTS, v->map[v->i][v->j]))
+				ft_error(v, "Error\nIlegal element detected!\n");
 			v->j++;
 		}
 		v->i++;
