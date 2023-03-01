@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pealexan <pealexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 00:48:51 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/26 09:05:22 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/03/01 08:10:52 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,10 @@
 
 void	ft_load_player(t_values *v)
 {
-	v->pl.mvup = mlx_xpm_file_to_image(v->mlx_ptr, \
-	"textures/player/mvup.xpm", &v->img_x, &v->img_y);
-	v->pl.mvdown = mlx_xpm_file_to_image(v->mlx_ptr, \
-	"textures/player/mvdown.xpm", &v->img_x, &v->img_y);
-	v->pl.mvright = mlx_xpm_file_to_image(v->mlx_ptr, \
-	"textures/player/mvright.xpm", &v->img_x, &v->img_y);
-	v->pl.mvleft = mlx_xpm_file_to_image(v->mlx_ptr, \
-	"textures/player/mvleft.xpm", &v->img_x, &v->img_y);
+	v->pl.mvup = ft_load_image(v, "textures/player/mvup.xpm");
+	v->pl.mvdown = ft_load_image(v, "textures/player/mvdown.xpm");
+	v->pl.mvright = ft_load_image(v, "textures/player/mvright.xpm");
+	v->pl.mvleft = ft_load_image(v, "textures/player/mvleft.xpm");
 }
 
 int	ft_move_up(t_values *v, int x, int y)

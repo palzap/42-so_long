@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pealexan <pealexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 18:37:46 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/25 01:32:38 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/03/01 08:05:34 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_values
 }	t_values;
 
 /*FREE------------------------------------------------------------------------*/
+
 /* Clears all allocated memory and exits. */
 int		ft_exit(t_values *v);
 
@@ -65,6 +66,10 @@ void	ft_error(t_values *v, char *msg);
 void	ft_free_map(t_values *v);
 
 /*GRAPHICS--------------------------------------------------------------------*/
+
+/* Loads images and checks if memory was correctly allocated. */
+void	*ft_load_image(t_values *v, char *path);
+
 /* Checks the map and puts the corresponding image to the window. */
 void	ft_load_map(t_values *v);
 

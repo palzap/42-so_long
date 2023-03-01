@@ -6,7 +6,7 @@
 /*   By: pealexan <pealexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 14:59:04 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/23 15:21:46 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/03/01 08:02:50 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,16 @@ void	ft_error(t_values *v, char *msg)
 
 void	ft_destroy_images(t_values *v)
 {
-	mlx_destroy_image(v->mlx_ptr, v->w_img);
-	mlx_destroy_image(v->mlx_ptr, v->p_img);
-	mlx_destroy_image(v->mlx_ptr, v->c_img);
-	mlx_destroy_image(v->mlx_ptr, v->e_img);
-	mlx_destroy_image(v->mlx_ptr, v->f_img);
+	if (v->w_img)
+		mlx_destroy_image(v->mlx_ptr, v->w_img);
+	if (v->p_img)
+		mlx_destroy_image(v->mlx_ptr, v->p_img);
+	if (v->c_img)
+		mlx_destroy_image(v->mlx_ptr, v->c_img);
+	if (v->e_img)
+		mlx_destroy_image(v->mlx_ptr, v->e_img);
+	if (v->f_img)
+		mlx_destroy_image(v->mlx_ptr, v->f_img);
 }
 
 int	ft_exit(t_values *v)

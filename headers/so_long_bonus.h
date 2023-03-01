@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pealexan <pealexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 18:37:46 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/28 10:56:13 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/03/01 08:08:21 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,9 @@ int		ft_move_up(t_values *v, int x, int y);
 int		ft_move_down(t_values *v, int x, int y);
 
 /*SO_LONG---------------------------------------------------------------------*/
+
+/* Loads images and checks if memory was correctly allocated. */
+void	*ft_load_image(t_values *v, char *path);
 
 /* Moves hostiles depending on random number generation. */
 void	ft_hostile_move(t_values *v);

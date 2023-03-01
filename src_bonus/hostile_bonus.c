@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hostile_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pealexan <pealexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 00:49:50 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/26 09:25:23 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/03/01 08:12:27 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,10 @@
 
 void	ft_load_hostile(t_values *v)
 {
-	v->hostile.hup = mlx_xpm_file_to_image(v->mlx_ptr, \
-	"textures/hostile/hup.xpm", &v->img_x, &v->img_y);
-	v->hostile.hdown = mlx_xpm_file_to_image(v->mlx_ptr, \
-	"textures/hostile/hdown.xpm", &v->img_x, &v->img_y);
-	v->hostile.hright = mlx_xpm_file_to_image(v->mlx_ptr, \
-	"textures/hostile/hright.xpm", &v->img_x, &v->img_y);
-	v->hostile.hleft = mlx_xpm_file_to_image(v->mlx_ptr, \
-	"textures/hostile/hleft.xpm", &v->img_x, &v->img_y);
+	v->hostile.hup = ft_load_image(v, "textures/hostile/hup.xpm");
+	v->hostile.hdown = ft_load_image(v, "textures/hostile/hdown.xpm");
+	v->hostile.hright = ft_load_image(v, "textures/hostile/hright.xpm");
+	v->hostile.hleft = ft_load_image(v, "textures/hostile/hleft.xpm");
 }
 
 void	ft_move_hostileright(t_values *v)

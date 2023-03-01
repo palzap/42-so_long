@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   so_long_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pealexan <pealexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 08:34:48 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/26 08:55:43 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/03/01 08:08:02 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/so_long_bonus.h"
+
+void	*ft_load_image(t_values *v, char *path)
+{
+	void	*img;
+
+	img = mlx_xpm_file_to_image(v->mlx_ptr, path,
+			&v->img_x, &v->img_y);
+	if (!img)
+	{
+		ft_putstr_fd("Error\nCould not allocate memory for image\n", 2);
+		ft_exit(v);
+	}
+	return (img);
+}
 
 void	ft_hostile_move(t_values *v)
 {

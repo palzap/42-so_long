@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   animation_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pealexan <pealexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 02:21:28 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/26 09:31:26 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/03/01 08:14:37 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,11 @@ void	ft_animation(t_values *v)
 	static int	i;
 
 	i++;
-	if (i == 5000)
+	if (i == 4000)
 		ft_animation1(v);
-	if (i == 10000)
+	if (i == 8000)
 		ft_animation2(v);
-	if (i == 15000)
+	if (i == 12000)
 	{
 		ft_animation3(v);
 		i = 0;
@@ -90,10 +90,7 @@ void	ft_animation(t_values *v)
 
 void	ft_load_animation(t_values *v)
 {
-	v->animate.wall1 = mlx_xpm_file_to_image(v->mlx_ptr, \
-	"textures/walls/SingleW1.xpm", &v->img_x, &v->img_y);
-	v->animate.wall2 = mlx_xpm_file_to_image(v->mlx_ptr, \
-	"textures/walls/SingleW2.xpm", &v->img_x, &v->img_y);
-	v->animate.wall3 = mlx_xpm_file_to_image(v->mlx_ptr, \
-	"textures/walls/SingleW3.xpm", &v->img_x, &v->img_y);
+	v->animate.wall1 = ft_load_image(v, "textures/walls/SingleW1.xpm");
+	v->animate.wall2 = ft_load_image(v, "textures/walls/SingleW2.xpm");
+	v->animate.wall3 = ft_load_image(v, "textures/walls/SingleW3.xpm");
 }

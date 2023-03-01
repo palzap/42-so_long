@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   graphics.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pealexan <pealexan@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pealexan <pealexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 14:57:15 by pealexan          #+#    #+#             */
-/*   Updated: 2023/02/25 01:03:02 by pealexan         ###   ########.fr       */
+/*   Updated: 2023/03/01 08:05:56 by pealexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/so_long.h"
+
+void	*ft_load_image(t_values *v, char *path)
+{
+	void	*img;
+
+	img = mlx_xpm_file_to_image(v->mlx_ptr, path,
+			&v->img_x, &v->img_y);
+	if (!img)
+	{
+		ft_putstr_fd("Error\nCould not allocate memory for image\n", 2);
+		ft_exit(v);
+	}
+	return (img);
+}
 
 void	ft_load_map(t_values *v)
 {
@@ -49,17 +63,16 @@ void	ft_graphics(t_values *v)
 	v->win_ptr = mlx_new_window(v->mlx_ptr, (v->map_x * SIZE),
 			(v->map_y * SIZE), "so_long");
 	if (!v->win_ptr)
+	{
+		mlx_destroy_display(v->mlx_ptr);
+		free(v->mlx_ptr);
 		ft_error(v, "Error\nCould not allocate win_ptr\n");
-	v->w_img = mlx_xpm_file_to_image(v->mlx_ptr, "textures/wall.xpm",
-			&v->img_x, &v->img_y);
-	v->p_img = mlx_xpm_file_to_image(v->mlx_ptr, "textures/player.xpm",
-			&v->img_x, &v->img_y);
-	v->c_img = mlx_xpm_file_to_image(v->mlx_ptr, "textures/collectible.xpm",
-			&v->img_x, &v->img_y);
-	v->e_img = mlx_xpm_file_to_image(v->mlx_ptr, "textures/exit.xpm",
-			&v->img_x, &v->img_y);
-	v->f_img = mlx_xpm_file_to_image(v->mlx_ptr, "textures/floor.xpm",
-			&v->img_x, &v->img_y);
+	}
+	v->w_img = ft_load_image(v, "textures/wall.xpm");
+	v->p_img = ft_load_image(v, "textures/player.xpm");
+	v->c_img = ft_load_image(v, "textures/collectible.xpm");
+	v->e_img = ft_load_image(v, "textures/exit.xpm");
+	v->f_img = ft_load_image(v, "textures/floor.xpm");
 }
 
 int	ft_move_player(t_values *v, int x, int y)
