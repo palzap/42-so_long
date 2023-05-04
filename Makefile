@@ -53,10 +53,10 @@ BONUS_OBJ = ${BONUS_SRC:.c=.o}
 all: 		$(NAME)
 
 $(LIBFT):
-			cd $(LIBFTDIR) && $(MAKE)
+			@$(MAKE) -C $(LIBFTDIR)
 
 $(MLX):
-			cd $(MLXDIR) && $(MAKE)
+			@$(MAKE) -C $(MLXDIR)
 	
 $(NAME): 	$(OBJ) $(LIBFT) $(MLX)
 			$(CC) $(CFLAGS) $(OBJ) $(LIBFTDIR)$(LIBFT) $(MLXDIR)$(MLX) $(EXTRA) -o $(NAME)
